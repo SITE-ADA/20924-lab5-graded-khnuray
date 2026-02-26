@@ -131,8 +131,23 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getEventsByDateRange(LocalDateTime start, LocalDateTime end) {
-        return List.of();
+
+    if (start == null || end == null) {
+        throw new IllegalArgumentException("Date range cannot be null");
     }
+
+    if (start.isAfter(end)) {
+        throw new IllegalArgumentException("Start date cannot be after end date");
+    }
+
+    return eventRepository.findAll()
+            .stream()
+            .filter(event -> event.getEventDateTime() != null &&
+                    !event.getEventDateTime().isBefore(start) &&
+                    !event.getEventDateTime().isAfter(end))
+            .collect(Collectors.toList());
+}
+
 
     @Override
     public Event updateEventPrice(UUID id, BigDecimal newPrice) {
