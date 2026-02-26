@@ -126,4 +126,14 @@ public class EventController {
         }
     }
 
+      // FILTER BY TAG
+    @GetMapping("/filter/tag")
+    public ResponseEntity<List<Event>> getEventsByTag(@RequestParam String tag) {
+        try {
+            return ResponseEntity.ok(eventService.getEventsByTag(tag));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
